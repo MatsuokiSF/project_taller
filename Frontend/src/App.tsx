@@ -1,10 +1,13 @@
 // src/App.tsx
 import { useState, useEffect } from 'react';
-import { User } from 'firebase/auth'; // or wherever the User type is defined
+import { User } from 'firebase/auth';
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import routes from "./routes/routes";
+import Login from './pages/Login';
 import { auth } from "./services/firebase";
 import AuthChecker from "./context/AuthChecker";
+import LoadingSpinner from './components/LoadingSpinner';
+import Layout from './Layout';
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -19,26 +22,28 @@ function App() {
     return () => unsubscribe();
   }, []);
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <LoadingSpinner />;
 
   return (
     <BrowserRouter>
       <Routes>
-        {routes.map((route, index) => (
-          <Route
-            key={index}
-            path={route.path}
-            element={
-              route.protected ? (
-                <AuthChecker>
-                  {user ? <route.component /> : <Navigate to="/login" replace />}
-                </AuthChecker>
-              ) : (
-                user ? <Navigate to="/home" replace /> : <route.component />
-              )
-            }
-          />
-        ))}
+        {/* Rutas públicas sin Layout */}
+        <Route path="/login" element={!user ? <Login /> : <Navigate to="/home" replace />} />
+
+        {/* Rutas protegidas dentro de Layout */}
+        <Route element={user ? <Layout /> : <Navigate to="/login" replace />}>
+          {routes.map((route, index) => (
+            route.protected && (
+              <Route
+                key={index}
+                path={route.path}
+                element={<AuthChecker><route.component /></AuthChecker>}
+              />
+            )
+          ))}
+        </Route>
+
+        {/* Ruta de fallback en caso de rutas no definidas */}
         <Route path="*" element={<Navigate to={user ? "/home" : "/login"} replace />} />
       </Routes>
     </BrowserRouter>

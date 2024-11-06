@@ -1,6 +1,8 @@
 // src/routes/routes.ts
 import Home from "../pages/Home";
 import Login from "../pages/Login";
+import Graph from "../pages/Graph";       // Importar el componente Graph
+import UploadPage from "../pages/UploadPage"; // Importar el componente UploadPage
 import * as ROUTES from "./../constants/routes";
 
 interface RouteType {
@@ -27,11 +29,30 @@ const routes: RouteType[] = [
     path: ROUTES.HOME_PATH,
     component: Home,
     name: "Home Screen",
-    protected: true,
+    protected: true, // Ruta Protegida
+  },
+  {
+    path: ROUTES.GRAPH_PATH,
+    component: Graph,
+    name: "Graph Screen",
+    protected: true, // Ruta Protegida
+  },
+  {
+    path: ROUTES.UPLOAD_PAGE_PATH,
+    component: UploadPage,
+    name: "Upload Page",
+    protected: true, // Ruta Protegida
+  },
+  {
+    path: "*",
+    component: Error,
+    name: "Error Screen",
+    protected: false,
   }
 ];
 
 export default routes;
+
 
   /*,
   {
@@ -46,15 +67,4 @@ export default routes;
     name: "Login Screen",
     protected: true,
   },
-  {
-    path: ROUTES.TODO_DETAILS_PATH,
-    component: TodoDetails,
-    name: "Todo Details Screen",
-    protected: true,
-  },
-  {
-    path: "*",
-    component: Error,
-    name: "Error Screen",
-    protected: false,
-  },*/
+,*/

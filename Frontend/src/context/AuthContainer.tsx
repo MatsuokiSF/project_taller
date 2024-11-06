@@ -27,10 +27,22 @@ const AuthContainer: React.FC = () => {
 
   return (
     <div>
-      <button onClick={signInWithGoogle} disabled={isLoading}>
-        Sign In With Google
+      <button 
+        className="text-googlefont font-sm py-2 px-4 rounded-3xl focus:outline-none focus:shadow-outline" 
+        type="button" 
+        onClick={signInWithGoogle} 
+        disabled={isLoading}
+        >
+        <p>
+          No tienes Cuenta?
+          <a>
+            <span className="font-bold text-blue-700 ">Registrate</span>
+          </a>
+        </p>
       </button>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>} 
+      {/*Utilizar alguna libreria que permita enviar el mensaje desplegable (Formato mas amigable) */}
+      
     </div>
   );
 };
